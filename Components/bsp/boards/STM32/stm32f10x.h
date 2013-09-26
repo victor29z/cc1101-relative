@@ -9,6 +9,12 @@
 	#define BSP_CONFIG_CLOCK_MHZ	72ul
 	#define SYSCLK_FREQ_72MHz		(BSP_CONFIG_CLOCK_MHZ * 1000000ul)
 
+#elif defined(MACH_RBT6)
+	
+	#define STM32F10X_MD
+	#define BSP_CONFIG_CLOCK_MHZ	72ul
+	#define SYSCLK_FREQ_72MHz		(BSP_CONFIG_CLOCK_MHZ * 1000000ul)
+
 #elif defined(STM32VLDISCOVERY)
 
 	#define STM32F10X_MD_VL

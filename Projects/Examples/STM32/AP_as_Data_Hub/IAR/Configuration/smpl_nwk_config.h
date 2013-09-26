@@ -1,12 +1,12 @@
 /**************************************************************************************************
-  Filename:       smpl_config.dat
-  Revised:        $Date: 2008-05-12 14:46:42 -0700 (Mon, 12 May 2008) $
-  Revision:       $Revision: 17062 $
+  Filename:       smpl_nwk_config.dat
+  Revised:        $Date: 2009-02-07 14:21:07 -0700 (Sat, 07 Feb 2009) $
+  Revision:       $Revision: 19010 $
   Author:         $Author: lfriedman $
 
-  Description:    This file supports the SimpliciTI Customer Configuration for Range Extenders.
+  Description:    This file supports the SimpliciTI Customer Configuration for overall network.
 
-  Copyright 2004-2007 Texas Instruments Incorporated. All rights reserved.
+  Copyright 2007-2009 Texas Instruments Incorporated. All rights reserved.
 
   IMPORTANT: Your use of this Software is limited to those specific rights granted under
   the terms of a software license agreement between the user who downloaded the software,
@@ -33,38 +33,58 @@
   contact Texas Instruments Incorporated at www.TI.com.
 **************************************************************************************************/
 
-/* Number of connections supported. Each connection supports bi-directional
- * communication.  Access Points and Range Extenders can set this to 0 if they
- * do not host End Device objects.
+
+/* max hop count */
+#define MAX_HOPS			3
+
+/* max hops away from and AP. Keeps hop count and therefore replay
+ * storms down for sending to and from polling End Devices. Also used
+ * when joining since the EDs can't be more than 1 hop away.
  */
--DNUM_CONNECTIONS=0
+#define MAX_HOPS_FROM_AP	1
 
-/*  ***  Size of low level queues for sent and received frames. Affects RAM usage  ***  */
-
-/* AP needs larger input frame queue if it is supporting store-and-forward
- * clients because the forwarded messages are held here.
+/* Maximum size of Network application payload. Do not change unless
+ * protocol changes are reflected in different maximum network
+ * application payload size.
  */
--DSIZE_INFRAME_Q=2
+#define MAX_NWK_PAYLOAD		34
 
-/* The output frame queue can be small since Tx is done synchronously. Actually
- * 1 is probably enough. If an Access Point device is also hosting an End Device 
- * that sends to a sleeping peer the output queue should be larger -- the waiting 
- * frames in this case are held here. In that case the output frame queue should 
- * be bigger. 
- */
--DSIZE_OUTFRAME_Q=2
+/* Maximum size of application payload */
+#define MAX_APP_PAYLOAD		10
 
-/* This device's address. The first byte is used as a filter on the CC1100/CC2500
- * radios so THE FIRST BYTE MUST NOT BE either 0x00 or 0xFF. Also, for these radios
- * on End Devices the first byte should be the least significant byte so the filtering
- * is maximally effective. Otherwise the frame has to be processed by the MCU before it
- * is recognized as not intended for the device. APs and REs run in promiscuous mode so
- * the filtering is not done. This macro intializes a static const array of unsigned
- * characters of length NET_ADDR_SIZE (found in nwk_types.h). The quotes (") are
- * necessary below unless the spaces are removed.
- */
--DTHIS_DEVICE_ADDRESS="{0x77, 0x56, 0x34, 0x12}"
+/* default Link token */
+#define DEFAULT_LINK_TOKEN	0x01020304
 
-/* device type */
--DRANGE_EXTENDER
+/* default Join token */
+#define DEFAULT_JOIN_TOKEN	0x05060708
 
+/* define Frequency Agility as active for this build */
+#define xFREQUENCY_AGILITY
+
+/* Remove 'x' corruption to enable application autoacknowledge support. Requires extended API as well */
+#define APP_AUTO_ACK
+
+/* Remove 'x' corruption to enable Extended API */
+#define EXTENDED_API
+
+/* Remove 'x' corruption to enable security. */
+#define xSMPL_SECURE
+
+/* Remove 'x' corruption to enable NV object support. */
+#define xNVOBJECT_SUPPORT
+
+/* Remove 'x' corruption to enable software timer. */
+#define SW_TIMER
+
+/* Remove 'x' corruption to enable frequency hopping. */
+#define xFREQUENCY_HOPPING
+
+#define BSP_TIMER_USED		BSP_TIMER_A3
+
+/* Remove 'x' corruption to make this device the reference clock. */
+#define xNWK_PLL_REFERENCE_CLOCK
+
+/* causes leds to blink in 00 -> 01 -> 11 -> 10 -> 00 rotation when FHSS enabled */
+#define NWK_PLL_SHOW_LOCATION_INDICATORS
+
+#define I_WANT_TO_CHANGE_DEFAULT_ROM_DEVICE_ADDRESS_PSEUDO_CODE

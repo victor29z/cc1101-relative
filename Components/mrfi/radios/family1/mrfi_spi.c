@@ -99,6 +99,7 @@ void mrfiSpiInit(void)
 
 	/* configure all SPI related pins */
 	MRFI_SPI_CONFIG_CSN_PIN_AS_OUTPUT();
+	MRFI_SPI_CONFIG_CSN_B_PIN_AS_OUTPUT();
 	MRFI_SPI_CONFIG_SCLK_PIN_AS_OUTPUT();
 	MRFI_SPI_CONFIG_SI_PIN_AS_OUTPUT();
 	MRFI_SPI_CONFIG_SO_PIN_AS_INPUT();
@@ -217,6 +218,7 @@ uint8_t mrfiSpiCmdStrobe(uint8_t addr)
 	mrfiSpiIState_t s;
 
 #ifdef DEBUG_SPI
+	DEBUG("SPI!C# ");
 	DEBUG_LN(cmdRegs[addr-SRES]);
 #endif
 
@@ -280,6 +282,7 @@ uint8_t mrfiSpiReadReg(uint8_t addr)
 	data = spiRegAccess(addr | BURST_BIT | READ_BIT, DUMMY_BYTE);
 
 #ifdef DEBUG_SPI
+	DEBUG("SPI!R# ");
 	DEBUG(spiRegs[addr]);
 	DEBUG(" ");
 	DEBUG_HEX_LN(data);
@@ -305,6 +308,7 @@ void mrfiSpiWriteReg(uint8_t addr, uint8_t value)
 	MRFI_SPI_ASSERT((addr <= 0x2E) || (addr == 0x3E));    /* invalid address */
 
 #ifdef DEBUG_SPI
+	DEBUG("SPI!W# ");
 	DEBUG(spiRegs[addr]);
 	DEBUG("=");
 	DEBUG_HEX_LN(value);

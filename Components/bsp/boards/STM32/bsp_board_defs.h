@@ -111,7 +111,7 @@ void BSP_InitSPI(SPI_TypeDef * port);
 
 	#define DEBUG(m)			__bsp_debug_msg(m)
 	#define DEBUG_LN(m)			__bsp_debug_msg_ln(m)
-	#define DEBUG_PRINT(m...)	printf(m)
+	#define DEBUG_PRINT(m, ...)	printf(m, __VA_ARGS__)
 	#define DEBUG_DEC(n)		__bsp_debug_dec(n)
 	#define DEBUG_HEX(n)		__bsp_debug_hex(n)
 	#define DEBUG_HEX_LN(n)		__bsp_debug_hex_ln(n)
@@ -120,7 +120,7 @@ void BSP_InitSPI(SPI_TypeDef * port);
 
 	#define DEBUG(m)
 	#define DEBUG_LN(m)
-	#define DEBUG_PRINT(m...)
+	#define DEBUG_PRINT(m, ...)
 	#define DEBUG_CLEAR()
 
 #endif

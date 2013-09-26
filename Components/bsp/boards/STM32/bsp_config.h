@@ -9,12 +9,11 @@
 #ifndef BSP_CONFIG_H
 #define BSP_CONFIG_H
 
-#define DEBUG_SPI
 
-#define BSP_DEBUG_PORT			USART2
+#define BSP_DEBUG_PORT			USART1
 #define BSP_DEBUG_SPEED			115200
-#define BSP_DEBUG_TX_PIN		PA2
-#define BSP_DEBUG_RX_PIN		PA3
+#define BSP_DEBUG_TX_PIN		PA9
+#define BSP_DEBUG_RX_PIN		PA10
 
 #include "Configuration/smpl_nwk_config.h"
 

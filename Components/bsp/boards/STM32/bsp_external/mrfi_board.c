@@ -117,10 +117,10 @@ void __mrfi_GDO0_INIT(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
 	/* Set Falling edge */
-	/* Connect EXTI7 Line to PB7 pin */
+	/* Connect EXTI0 Line to PB0 pin */
 	GPIO_EXTILineConfig(__mrfi_GDO0_EXTI_PORT, __mrfi_GDO0_EXTI_PIN);
 
-	/* Configure EXTI7 line */
+	/* Configure EXTI0 line */
 	EXTI_InitStructure.EXTI_Line = __mrfi_GDO0_EXTI_LINE;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
@@ -128,8 +128,8 @@ void __mrfi_GDO0_INIT(void)
 	EXTI_Init(&EXTI_InitStructure);
 	MRFI_GDO0_INT_DISABLE();
 
-	/* Enable and set EXTI9_5 Interrupt to highest priority */
-	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
+	/* Enable and set EXTI0 Interrupt to highest priority */
+	NVIC_InitStructure.NVIC_IRQChannel = __mrfi_GDO0_EXTI_IRQ;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;

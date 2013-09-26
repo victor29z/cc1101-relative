@@ -81,7 +81,7 @@ void			gpioPinConfig(uint16_t mode_pin);
 #define __bsp_PIN_CONFIG__(pin,mode)	gpioPinConfig	((mode << 8) | pin)
 
 #define PIN_MODE_AF_50		(((uint32_t)GPIO_Mode_AF_PP | (uint32_t)GPIO_Speed_50MHz))
-#define PIN_MODE_IN			((uint32_t)GPIO_Mode_IN_FLOATING)
+#define PIN_MODE_IN			((uint32_t)GPIO_Mode_IPU)
 #define PIN_MODE_OUT_PP_50	(((uint32_t)GPIO_Mode_Out_PP | (uint32_t)GPIO_Speed_50MHz))
 #define PIN_MODE_OUT_PP_10	(((uint32_t)GPIO_Mode_Out_PP | (uint32_t)GPIO_Speed_10MHz))
 #define PIN_MODE_OUT_PP_2	(((uint32_t)GPIO_Mode_Out_PP | (uint32_t)GPIO_Speed_2MHz))

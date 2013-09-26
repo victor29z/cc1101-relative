@@ -284,6 +284,26 @@ static const uint8_t mrfiRadioCfg[][2] =
 #endif
 
   /* imported SmartRF radio configuration */
+	
+{	FSCTRL1  ,SMARTRF_SETTING_FSCTRL1	},
+{	FREQ2    ,SMARTRF_SETTING_FREQ2		},
+{	FREQ1    ,SMARTRF_SETTING_FREQ1		},
+{	FREQ0    ,SMARTRF_SETTING_FREQ0		},
+{	MDMCFG4  ,SMARTRF_SETTING_MDMCFG4	},
+{	MDMCFG3  ,SMARTRF_SETTING_MDMCFG3	},
+{	MDMCFG2  ,SMARTRF_SETTING_MDMCFG2	},
+{	MDMCFG1  ,SMARTRF_SETTING_MDMCFG1	},
+{	DEVIATN  ,SMARTRF_SETTING_DEVIATN	},
+{	MCSM0    ,SMARTRF_SETTING_MCSM0		},
+{	FOCCFG   ,SMARTRF_SETTING_FOCCFG	},
+{	WORCTRL  ,SMARTRF_SETTING_WORCTRL	},
+{	FSCAL3   ,SMARTRF_SETTING_FSCAL3	},
+{	FSCAL2   ,SMARTRF_SETTING_FSCAL2	},
+{	FSCAL1   ,SMARTRF_SETTING_FSCAL1	},
+{	FSCAL0   ,SMARTRF_SETTING_FSCAL0	},
+{	TEST2    ,SMARTRF_SETTING_TEST2		},
+{	TEST1    ,SMARTRF_SETTING_TEST1		},
+/*
   {  FSCTRL1,   SMARTRF_SETTING_FSCTRL1   },
   {  FSCTRL0,   SMARTRF_SETTING_FSCTRL0   },
   {  FREQ2,     SMARTRF_SETTING_FREQ2     },
@@ -309,6 +329,7 @@ static const uint8_t mrfiRadioCfg[][2] =
   {  TEST2,     SMARTRF_SETTING_TEST2     },
   {  TEST1,     SMARTRF_SETTING_TEST1     },
   {  TEST0,     SMARTRF_SETTING_TEST0     },
+*/
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -1024,8 +1045,8 @@ static void Mrfi_SyncPinRxIsr(void)
 
 		rxBytesVerify = mrfiSpiReadReg( RXBYTES );
 
-    do
-    {
+	    do
+	    {
 			rxBytes = rxBytesVerify;
 			rxBytesVerify = mrfiSpiReadReg( RXBYTES );
 		}
@@ -1048,6 +1069,7 @@ static void Mrfi_SyncPinRxIsr(void)
 	if (rxBytes == 0)
 	{
 		/* receive FIFO is empty - do nothing, skip to end */
+		DEBUG_LN("Empty FIFO!");
 	}
 	else
 	{
@@ -1148,6 +1170,7 @@ static void Mrfi_SyncPinRxIsr(void)
 			if (!(mrfiIncomingPacket.rxMetrics[MRFI_RX_METRICS_CRC_LQI_OFS] & MRFI_RX_METRICS_CRC_OK_MASK))
 			{
 				/* CRC failed - do nothing, skip to end */
+				DEBUG_LN("Bad CRC!");
 			}
 			else
 			{
