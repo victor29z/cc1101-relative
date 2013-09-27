@@ -8,6 +8,10 @@
 /******************************************************************************
  * CONSTANTS AND DEFINES
  */
+#define UART_IRQ_ENABLE(x,y)	USART_ITConfig(x,y,ENABLE)
+#define UART_IRQ_DISABLE(x,y)	USART_ITConfig(x,y,DISABLE)
+#define UART_SEND(x,y)			x->DR = y
+#define UART_RECEIVE(x)			x->DR
 
 /* ------------------------------------------------------------------------------------------------
  *                          MACROS AND DEFINES FOR ALL 8051 VARIANTS
@@ -18,8 +22,8 @@
 	( defined __ICCARM__ )			&& \
 	( defined BSP_BOARD_STM32 )
 
-	#define USART_NUMBER		USART2
-	#define USART_IRQ_HANDLER	USART2_IRQHandler
+	#define USART_NUMBER		USART1
+	#define USART_IRQ_HANDLER	USART1_IRQHandler
 
 #endif /* defined ( __IAR_SYSTEMS_ICC__ && __ICCARM__ && BSP_BOARD_STM32 ) */
 

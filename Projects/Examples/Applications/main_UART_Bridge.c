@@ -48,6 +48,12 @@
   #include "uart_intfc.h"
 #endif
 
+#define SPIN_ABOUT_A_SECOND				NWK_DELAY(1000)
+#define SPIN_ABOUT_A_QUARTER_SECOND		NWK_DELAY(250)
+
+
+void toggleLED(uint8_t which);
+void createRandomAddress(addr_t * lAddr);
 
 void main (void)
 {
@@ -64,6 +70,14 @@ void main (void)
   uint16_t led_tmr;
 
   BSP_Init( );
+#ifdef I_WANT_TO_CHANGE_DEFAULT_ROM_DEVICE_ADDRESS_PSEUDO_CODE
+  {
+	  addr_t lAddr;
+	  createRandomAddress(&lAddr);
+	  SMPL_Ioctl(IOCTL_OBJ_ADDR, IOCTL_ACT_SET, &lAddr);
+  }
+#endif /* I_WANT_TO_CHANGE_DEFAULT_ROM_DEVICE_ADDRESS_PSEUDO_CODE */
+
 
   SMPL_Init( NULL );
   
@@ -146,3 +160,12 @@ void main (void)
 
     goto main_loop; /* do it again and again and again and ... */
 }
+
+
+void toggleLED(uint8_t which)
+{
+	if (1 == which)			{	BSP_TOGGLE_LED1();	}
+	else if (2 == which)	{	BSP_TOGGLE_LED2();	}
+	return;
+}
+

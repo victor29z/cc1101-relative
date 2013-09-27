@@ -36,7 +36,7 @@
 #define uart_intfc_h
 
 #include <stddef.h>
-#include "uart.h"
+#include "uart_stm32.h"
 
 /* ------------------------------------------------------------------------------------------------
  *                                         Prototypes

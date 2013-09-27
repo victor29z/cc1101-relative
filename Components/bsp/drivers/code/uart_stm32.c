@@ -20,10 +20,11 @@ void USART_IRQ_HANDLER( void )
 	bspIState_t istate;
 	istate = __bsp_GET_ISTATE__();
 	BSP_ENABLE_INTERRUPTS();
-
-	uart_tx_irq( );
-	uart_rx_irq( );
-
+	if(USART_GetITStatus(USART_NUMBER,USART_IT_TXE))
+		uart_tx_irq( );
+	else if(USART_GetITStatus(USART_NUMBER,USART_IT_RXNE))
+		uart_rx_irq( );
+	
 	__bsp_RESTORE_ISTATE__(istate);
 	return;
 }
@@ -78,7 +79,7 @@ void uart_tx_irq( void )
 			 * disable it so we don't re-enter the isr.  the interrupt will be
 			 * re-enabled when there is another message to send.
 			 */
-			//! UART_IRQ_DISABLE( USART_NUMBER, TX );
+			UART_IRQ_DISABLE( USART_NUMBER, USART_IT_TXE);
       
 			/* no more data to send, reset the handler to flag not busy */
 			uart_tx_handler = NULL;
@@ -86,11 +87,11 @@ void uart_tx_irq( void )
 			BSP_EXIT_CRITICAL_SECTION( intState );
 		}
 
-		//! UART_SEND( USART_NUMBER, c ); /* send the byte */
+		UART_SEND( USART_NUMBER, c ); /* send the byte */
 	}
 	else /* if no handler exists?!?!?!? */
 		/* something went wrong, disable interrupts so we don't get stuck here */
-		//! UART_IRQ_DISABLE( UART_NUMBER, TX );
+		 UART_IRQ_DISABLE( USART_NUMBER, USART_IT_TXE );
 
 	return;
 }
@@ -111,7 +112,8 @@ void uart_rx_irq( void )
 	uart_put_rx_data_type handler;
   
 	/* read in the received data, this will clear the interrupt also */
-	unsigned char c = 0; //! UART_RECEIVE( UART_NUMBER );
+	unsigned char c = 0; 
+	c = UART_RECEIVE( USART_NUMBER );
   
 	BSP_CRITICAL_STATEMENT( handler = uart_rx_handler );
   
@@ -140,6 +142,7 @@ void uart_rx_irq( void )
 void uart_init( void )
 {
 	volatile uint16_t i;
+	NVIC_InitTypeDef NVIC_InitStructure;
 
 	/* make sure the handler functions are cleared in case we are re-initialized */
 	uart_tx_handler = NULL;
@@ -153,6 +156,13 @@ void uart_init( void )
 		UART_STOP_BITS,			// number of stop bits
 		UART_BAUD_RATE );		// baud rate to use
 	*/   
+	/* initialize the uart nvic settings*/
+	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
 	i = UART_BAUD_RATE >> 5; /* delay approximately 1 bit time */
 	while( --i != 0 ) /* give the uart some time to initialize */
 		; /* null statement */
@@ -161,10 +171,10 @@ void uart_init( void )
 	 * that way when a message is sent and the irq is enabled, the interrupt
 	 * will happen immediately to start the transmission
 	 */
-	//	UART_IRQ_FLAG_SET( UART_NUMBER, TX ); // set the interrupt
+	//UART_IRQ_FLAG_SET( USART_NUMBER, TX ); // if TXE interrupt is enabled, this not necessary in stm32 platform
 
 	/* enable receive interrupts, they are always welcome. */
-	// UART_IRQ_ENABLE( UART_NUMBER, RX );
+	UART_IRQ_ENABLE( USART_NUMBER, USART_IT_RXNE );
 
 	return;
 }
@@ -198,7 +208,7 @@ bool uart_tx_message( uart_get_tx_data_type handler )
 		/* once the handler has been setup, enable the interrupt.
 		 * this will cause the message to begin transmission
 		 */
-		// UART_IRQ_ENABLE( UART_NUMBER, TX ); 
+		UART_IRQ_ENABLE( USART_NUMBER, USART_IT_TXE ); 
 
 		status = true; /* indicate success */    
 	}

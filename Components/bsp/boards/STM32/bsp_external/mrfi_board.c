@@ -38,7 +38,7 @@ BSP_ISR_FUNCTION( MRFI_GDO0_INT_HANDLER, MRFI_GDO0_INT_VECTOR )
 		/* This ISR is easily replaced.  The new ISR must simply
 		 * include the following function call.
 		 */
-		DEBUG_LN("-- INT --");
+		//DEBUG_LN("-- INT --");
 		MRFI_GpioIsr();
 	}
 }
